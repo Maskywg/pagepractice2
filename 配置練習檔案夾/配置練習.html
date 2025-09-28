@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>網頁配置練習</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white p-6 md:p-10 rounded-3xl shadow-2xl w-full max-w-4xl space-y-8">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-6">網頁配置練習</h1>
+
+        <!-- 影片區塊 -->
+        <section class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">影片區塊</h2>
+            <div class="aspect-w-16 aspect-h-9 w-full rounded-xl overflow-hidden shadow-lg">
+                <!-- 影片已連結 -->
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/_5FZ6J4N75Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="w-full h-full"></iframe>
+            </div>
+            <p class="mt-4 text-sm text-gray-500">
+                提示：將 iframe src 屬性中的 'YOUR_VIDEO_ID' 替換成您的 YouTube 影片 ID。
+                <br>範例: &lt;iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID"&gt;&lt;/iframe&gt;
+            </p>
+        </section>
+
+        <!-- 照片區塊 -->
+        <section class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">照片區塊</h2>
+            <div class="rounded-xl overflow-hidden shadow-lg">
+                <!-- 圖片已設定為本地相對路徑 images/pic.png -->
+                <img src="images/pic.png" alt="練習用圖片" class="w-full h-auto object-cover">
+            </div>
+            <p class="mt-4 text-sm text-gray-500">
+                提示：此圖片已設定為 `images/pic.png`。您可以嘗試將它更改為其他圖片或路徑。
+            </p>
+        </section>
+
+        <!-- 音檔區塊 -->
+        <section class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">音檔區塊</h2>
+            <div class="w-full flex justify-center">
+                <!-- 音檔已設定為本地相對路徑 audio/music.mp3 -->
+                <audio controls class="w-full rounded-full shadow-md">
+                    <source src="audio/music.mp3" type="audio/mpeg">
+                    您的瀏覽器不支援音檔播放。
+                </audio>
+            </div>
+            <p class="mt-4 text-sm text-gray-500">
+                提示：此音檔已設定為 `audio/music.mp3`。您可以嘗試將它更改為其他音檔或路徑。
+            </p>
+        </section>
+
+        <!-- 表單連結區塊 -->
+        <section class="bg-gray-50 p-6 rounded-2xl border border-gray-200 text-center">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">表單連結</h2>
+            <a 
+                href="" 
+                target="_blank" 
+                class="inline-block px-8 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-300">
+                前往填寫表單
+            </a>
+            <p class="mt-4 text-sm text-gray-500">
+                提示：請將 href 屬性替換成您的表單網址。
+                <br>範例: &lt;a href="您的表單網址"&gt;
+            </p>
+        </section>
+
+        <!-- 問答小遊戲區塊 -->
+        <section class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">問答小遊戲</h2>
+            <div id="game-container" class="space-y-4">
+                <div class="bg-white p-4 rounded-xl shadow-inner border border-gray-300">
+                    <p id="question-text" class="text-gray-700 text-lg font-medium"></p>
+                </div>
+                <input type="text" id="answer-input" placeholder="請輸入答案" class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+                <button id="submit-button" class="w-full px-6 py-3 bg-green-600 text-white font-semibold rounded-full shadow-md hover:bg-green-700 transition-colors duration-300">
+                    提交答案
+                </button>
+                <p id="message-text" class="text-center font-bold"></p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // 遊戲的問答題庫
+        const questions = [
+            {
+                question: "HTML 的全名是什麼？",
+                answer: "HyperText Markup Language"
+            },
+            {
+                question: "CSS 的主要用途是什麼？",
+                answer: "網頁樣式"
+            },
+            {
+                question: "JavaScript 主要用於處理網頁的什麼功能？",
+                answer: "互動"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        const questionTextElement = document.getElementById('question-text');
+        const answerInputElement = document.getElementById('answer-input');
+        const submitButtonElement = document.getElementById('submit-button');
+        const messageTextElement = document.getElementById('message-text');
+
+        // 顯示當前問題
+        function showQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                questionTextElement.textContent = questions[currentQuestionIndex].question;
+                answerInputElement.value = '';
+                messageTextElement.textContent = '';
+                messageTextElement.className = 'text-center font-bold';
+            } else {
+                questionTextElement.textContent = "恭喜您！所有問題都答對了！";
+                answerInputElement.style.display = 'none';
+                submitButtonElement.style.display = 'none';
+                messageTextElement.textContent = "遊戲結束。";
+                messageTextElement.className = 'text-center font-bold text-blue-600';
+            }
+        }
+
+        // 檢查答案
+        function checkAnswer() {
+            const userAnswer = answerInputElement.value.trim().toLowerCase();
+            const correctAnswer = questions[currentQuestionIndex].answer.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                messageTextElement.textContent = "答對了！";
+                messageTextElement.className = 'text-center font-bold text-green-600';
+                currentQuestionIndex++;
+                setTimeout(showQuestion, 1500); // 1.5秒後顯示下一題
+            } else {
+                messageTextElement.textContent = "答案錯誤，請再試一次。";
+                messageTextElement.className = 'text-center font-bold text-red-600';
+            }
+        }
+
+        // 為提交按鈕添加點擊事件監聽器
+        submitButtonElement.addEventListener('click', checkAnswer);
+
+        // 初始顯示第一個問題
+        window.onload = showQuestion;
+    </script>
+</body>
+</html>
